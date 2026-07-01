@@ -250,8 +250,11 @@ function handleSearch(query) {
   }
 
   if (results.length === 0) {
-    container.innerHTML =
-      '<div class="no-results">Produk dengan kata kunci "' + query + '" tidak ditemukan.</div>';
+    var msg = document.createElement("div");
+    msg.className = "no-results";
+    msg.textContent = 'Produk dengan kata kunci "' + query + '" tidak ditemukan.';
+    container.innerHTML = "";
+    container.appendChild(msg);
     return;
   }
 
