@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>nab.sepatu - Toko Sepatu Online</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <a href="#" onclick="showHome()">nab.<span>sepatu</span></a>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Cari sepatu impianmu..." oninput="handleSearch(this.value)">
+        <button type="button" onclick="handleSearch(document.getElementById('searchInput').value)">Cari</button>
+      </div>
+      <div class="cart-icon" onclick="showCart()">
+        <span>🛒</span>
+        <span id="cartCount" class="cart-count">0</span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="services">
+    <button class="service-btn active" data-service="brand" onclick="selectService('brand')">Brand</button>
+    <button class="service-btn" data-service="sport" onclick="selectService('sport')">Sport</button>
+    <button class="service-btn" data-service="pria" onclick="selectService('pria')">Pria</button>
+  </nav>
+
+  <section class="subcategories" id="subcategories"></section>
+
+  <section class="content" id="content">
+    <div class="welcome">
+      <h2>Selamat Datang di nab.sepatu</h2>
+      <p>Pilih layanan di atas untuk melihat koleksi sepatu terbaik kami.</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2026 nab.sepatu - Toko Sepatu Online</p>
+  </footer>
+
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">Detail Produk</h3>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+
+  <div class="cart-modal-overlay" id="cartModalOverlay" onclick="closeCart()"></div>
+  <div class="cart-modal" id="cartModal">
+    <div class="cart-modal-header">
+      <h3>Keranjang Belanja</h3>
+      <button class="modal-close" onclick="closeCart()">&times;</button>
+    </div>
+    <div class="cart-modal-body" id="cartModalBody">
+      <p>Keranjang masih kosong.</p>
+    </div>
+    <div class="cart-modal-footer">
+      <button class="btn-beli" onclick="checkout()">Checkout</button>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
