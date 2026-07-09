@@ -51,7 +51,7 @@ function renderProducts(subKey) {
   for (var i = 0; i < products.length; i++) {
     var p = products[i];
     html += '<div class="product-card">';
-    html += '<div class="product-image">' + p.emoji + "</div>";
+    html += '<div class="product-image"><img src="' + p.image + '" alt="' + p.name + '" loading="lazy"></div>';
     html += '<div class="product-info">';
     html += '<div class="product-name">' + p.name + "</div>";
     html += '<div class="product-category">' + nabsepatuData[currentService].label + " / " + nabsepatuData[currentService].subcategories[subKey].label + "</div>";
@@ -124,9 +124,9 @@ function showDetail(productId) {
   document.getElementById("modalTitle").textContent = product.name;
   var body = document.getElementById("modalBody");
   body.innerHTML =
-    '<div class="product-image">' +
-    product.emoji +
-    "</div>" +
+    '<div class="product-image"><img src="' +
+    product.image +
+    '" alt="' + product.name + '" loading="lazy"></div>' +
     '<div class="product-name" style="font-size:20px;font-weight:700;color:#1a237e">' +
     product.name +
     "</div>" +
@@ -153,6 +153,85 @@ function closeModal() {
   document.getElementById("modal").classList.remove("active");
 }
 
+function getUsers() {
+  return JSON.parse(localStorage.getItem("nabsepatu_users") || "[]");
+}
+
+function saveUsers(users) {
+  localStorage.setItem("nabsepatu_users", JSON.stringify(users));
+}
+
+function handleLogin(event) {
+  event.preventDefault();
+  var email = document.getElementById("loginEmail").value;
+  var password = document.getElementById("loginPassword").value;
+
+  if (email === "admin@nab.sepatu" && password === "admin123") {
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("app").classList.remove("app-hidden");
+    document.getElementById("loginForm").reset();
+    return;
+  }
+
+  var users = getUsers();
+  var found = false;
+  for (var i = 0; i < users.length; i++) {
+    if (users[i].email === email && users[i].password === password) {
+      found = true;
+      break;
+    }
+  }
+
+  if (found) {
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("app").classList.remove("app-hidden");
+    document.getElementById("loginForm").reset();
+  } else {
+    alert("Email atau kata sandi salah.");
+  }
+}
+
+function showRegister() {
+  document.getElementById("registerOverlay").classList.add("active");
+  document.getElementById("registerModal").classList.add("active");
+}
+
+function closeRegister() {
+  document.getElementById("registerOverlay").classList.remove("active");
+  document.getElementById("registerModal").classList.remove("active");
+  document.getElementById("registerForm").reset();
+}
+
+function handleRegister(event) {
+  event.preventDefault();
+  var name = document.getElementById("regName").value;
+  var email = document.getElementById("regEmail").value;
+  var password = document.getElementById("regPassword").value;
+
+  var users = getUsers();
+
+  for (var i = 0; i < users.length; i++) {
+    if (users[i].email === email) {
+      alert("Email sudah terdaftar. Gunakan email lain.");
+      return;
+    }
+  }
+
+  users.push({ name: name, email: email, password: password });
+  saveUsers(users);
+  alert("Pendaftaran berhasil! Silakan masuk.");
+  closeRegister();
+}
+
+function handleLogout() {
+  cart = [];
+  updateCartCount();
+  closeCart();
+  document.getElementById("app").classList.add("app-hidden");
+  document.getElementById("loginPage").style.display = "flex";
+  document.getElementById("loginForm").reset();
+}
+
 function showCart() {
   var body = document.getElementById("cartModalBody");
   if (cart.length === 0) {
@@ -168,9 +247,9 @@ function showCart() {
     total += item.price;
     html +=
       '<div class="cart-item">' +
-      '<div class="cart-item-image">' +
-      item.emoji +
-      "</div>" +
+      '<div class="cart-item-image"><img src="' +
+      item.image +
+      '" alt="' + item.name + '" loading="lazy"></div>' +
       '<div class="cart-item-info">' +
       '<div class="cart-item-name">' +
       item.name +
@@ -265,7 +344,7 @@ function handleSearch(query) {
   for (var i = 0; i < results.length; i++) {
     var p = results[i];
     html += '<div class="product-card">';
-    html += '<div class="product-image">' + p.emoji + "</div>";
+    html += '<div class="product-image"><img src="' + p.image + '" alt="' + p.name + '" loading="lazy"></div>';
     html += '<div class="product-info">';
     html += '<div class="product-name">' + p.name + "</div>";
     html += '<div class="product-price">' + formatPrice(p.price) + "</div>";

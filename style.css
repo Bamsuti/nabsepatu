@@ -13,6 +13,49 @@ body {
   flex-direction: column;
 }
 
+.app-hidden {
+  display: none;
+}
+
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0d47a1, #1565c0);
+  padding: 20px;
+}
+
+.login-box {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 40px 32px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.login-logo {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 800;
+  color: #0d47a1;
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+}
+
+.login-logo span {
+  color: #90caf9;
+  font-weight: 300;
+}
+
+.login-desc {
+  text-align: center;
+  color: #78909c;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
 .header {
   background: linear-gradient(135deg, #0d47a1, #1565c0);
   padding: 12px 20px;
@@ -78,6 +121,107 @@ body {
 
 .search-bar button:hover {
   background: #64b5f6;
+}
+
+.btn-logout {
+  padding: 8px 20px;
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid #ff5252;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.btn-logout:hover {
+  background: #ff5252;
+  color: #ffffff;
+}
+
+.btn-login {
+  padding: 8px 20px;
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid #90caf9;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.btn-login:hover {
+  background: #90caf9;
+  color: #0d47a1;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 700;
+  color: #1a237e;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e3f2fd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  border-color: #90caf9;
+}
+
+.btn-login-submit {
+  width: 100%;
+  padding: 14px 0;
+  background: linear-gradient(135deg, #0d47a1, #1565c0);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 8px;
+}
+
+.btn-login-submit:hover {
+  background: linear-gradient(135deg, #1565c0, #1976d2);
+  transform: scale(1.02);
+}
+
+.login-register-text {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 14px;
+  color: #546e7a;
+}
+
+.login-register-text a {
+  color: #1565c0;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.login-register-text a:hover {
+  text-decoration: underline;
 }
 
 .cart-icon {
@@ -239,8 +383,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 64px;
   background: #e3f2fd;
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .product-info {
@@ -478,10 +628,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
   background: #e3f2fd;
   border-radius: 8px;
   flex-shrink: 0;
+  overflow: hidden;
+}
+
+.cart-item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .cart-item-info {
