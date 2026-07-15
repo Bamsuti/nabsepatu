@@ -64,7 +64,7 @@
         </div>
         <button class="btn-logout" onclick="handleLogout()">Keluar</button>
         <div class="cart-icon" onclick="showCart()">
-          <span>🛒</span>
+          <span>ðŸ›’</span>
           <span id="cartCount" class="cart-count">0</span>
         </div>
       </div>
@@ -111,6 +111,85 @@
     <div class="cart-modal-footer">
       <button class="btn-beli" onclick="checkout()">Checkout</button>
     </div>
+  </div>
+
+  <div class="order-overlay" id="orderOverlay" onclick="closeOrderForm()"></div>
+  <div class="order-modal" id="orderModal">
+    <div class="order-header">
+      <h3>Form Pemesanan</h3>
+      <button class="modal-close" onclick="closeOrderForm()">&times;</button>
+    </div>
+    <div class="order-body" id="orderBody">
+      <div class="order-summary" id="orderSummary"></div>
+      <form id="orderForm" onsubmit="handleOrder(event)">
+        <div class="form-group">
+          <label for="orderName">Nama Lengkap</label>
+          <input type="text" id="orderName" class="form-input" placeholder="Nama lengkap pemesan" required>
+        </div>
+        <div class="form-group">
+          <label for="orderPhone">No. Telepon / WhatsApp</label>
+          <input type="tel" id="orderPhone" class="form-input" placeholder="08xxxxxxxxxx" required>
+        </div>
+        <div class="form-group">
+          <label for="orderAddress">Alamat Pengiriman</label>
+          <textarea id="orderAddress" class="form-input order-textarea" placeholder="Alamat lengkap (jalan, nomor, RT/RW, kelurahan, kecamatan, kota, kode pos)" required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Metode Pembayaran</label>
+          <div class="payment-options" id="paymentOptions">
+            <label class="payment-option">
+              <input type="radio" name="paymentMethod" value="bca" required>
+              <div class="payment-card">
+                <div class="payment-logo payment-bca">BCA</div>
+                <span>Transfer BCA</span>
+              </div>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="paymentMethod" value="bri">
+              <div class="payment-card">
+                <div class="payment-logo payment-bri">BRI</div>
+                <span>Transfer BRI</span>
+              </div>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="paymentMethod" value="mandiri">
+              <div class="payment-card">
+                <div class="payment-logo payment-mandiri">Mandiri</div>
+                <span>Transfer Mandiri</span>
+              </div>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="paymentMethod" value="bni">
+              <div class="payment-card">
+                <div class="payment-logo payment-bni">BNI</div>
+                <span>Transfer BNI</span>
+              </div>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="paymentMethod" value="cod">
+              <div class="payment-card">
+                <div class="payment-logo payment-cod">COD</div>
+                <span>Cash on Delivery</span>
+              </div>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="paymentMethod" value="qris">
+              <div class="payment-card">
+                <div class="payment-logo payment-qris">QRIS</div>
+                <span>QRIS / E-Wallet</span>
+              </div>
+            </label>
+          </div>
+        </div>
+        <div class="order-total" id="orderTotal"></div>
+        <button type="submit" class="btn-order-submit">Konfirmasi Pesanan</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="order-overlay" id="successOverlay" onclick="closeSuccess()"></div>
+  <div class="order-modal" id="successModal">
+    <div class="success-body" id="successBody"></div>
   </div>
 
   <script src="data.js"></script>
