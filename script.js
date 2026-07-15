@@ -109,13 +109,25 @@ function getProductById(id) {
 function addToCart(productId) {
   var product = getProductById(productId);
   if (!product) return;
-  cart.push(product);
+  for (var i = 0; i < cart.length; i++) {
+    if (cart[i].id === productId) {
+      cart[i].qty = (cart[i].qty || 1) + 1;
+      updateCartCount();
+      alert('"' + product.name + '" ditambahkan ke keranjang (x' + cart[i].qty + ")!");
+      return;
+    }
+  }
+  cart.push({ id: product.id, name: product.name, price: product.price, image: product.image, description: product.description, qty: 1 });
   updateCartCount();
   alert('"' + product.name + '" telah ditambahkan ke keranjang!');
 }
 
 function updateCartCount() {
-  document.getElementById("cartCount").textContent = cart.length;
+  var total = 0;
+  for (var i = 0; i < cart.length; i++) {
+    total += cart[i].qty || 1;
+  }
+  document.getElementById("cartCount").textContent = total;
 }
 
 function showDetail(productId) {
@@ -244,7 +256,9 @@ function showCart() {
   var total = 0;
   for (var i = 0; i < cart.length; i++) {
     var item = cart[i];
-    total += item.price;
+    var qty = item.qty || 1;
+    var subtotal = item.price * qty;
+    total += subtotal;
     html +=
       '<div class="cart-item">' +
       '<div class="cart-item-image"><img src="' +
@@ -255,8 +269,13 @@ function showCart() {
       item.name +
       "</div>" +
       '<div class="cart-item-price">' +
-      formatPrice(item.price) +
+      formatPrice(item.price) + " x " + qty +
       "</div>" +
+      "</div>" +
+      '<div class="cart-item-qty-control">' +
+      '<button class="qty-btn" onclick="changeQty(' + i + ', -1)">-</button>' +
+      '<span class="qty-value">' + qty + '</span>' +
+      '<button class="qty-btn" onclick="changeQty(' + i + ', 1)">+</button>' +
       "</div>" +
       '<button class="cart-item-remove" onclick="removeFromCart(' +
       i +
@@ -267,6 +286,17 @@ function showCart() {
   body.innerHTML = html;
   document.getElementById("cartModalOverlay").classList.add("active");
   document.getElementById("cartModal").classList.add("active");
+}
+
+function changeQty(index, delta) {
+  var qty = (cart[index].qty || 1) + delta;
+  if (qty <= 0) {
+    cart.splice(index, 1);
+  } else {
+    cart[index].qty = qty;
+  }
+  updateCartCount();
+  showCart();
 }
 
 function removeFromCart(index) {
@@ -285,14 +315,125 @@ function checkout() {
     alert("Keranjang masih kosong!");
     return;
   }
+  closeCart();
+  showOrderForm();
+}
+
+function showOrderForm() {
+  var summaryHtml = '<div class="order-summary-title">Ringkasan Pesanan</div>';
   var total = 0;
   for (var i = 0; i < cart.length; i++) {
-    total += cart[i].price;
+    var item = cart[i];
+    var qty = item.qty || 1;
+    var subtotal = item.price * qty;
+    total += subtotal;
+    summaryHtml +=
+      '<div class="order-item">' +
+      '<div class="order-item-img"><img src="' + item.image + '" alt="' + item.name + '" loading="lazy"></div>' +
+      '<div class="order-item-info">' +
+      '<div class="order-item-name">' + item.name + '</div>' +
+      '<div class="order-item-qty">' + formatPrice(item.price) + ' x ' + qty + '</div>' +
+      '</div>' +
+      '<div class="order-item-price">' + formatPrice(subtotal) + '</div>' +
+      '</div>';
   }
-  alert("Pesanan berhasil! Total: " + formatPrice(total) + "\nTerima kasih telah berbelanja di nab.sepatu!");
+  document.getElementById("orderSummary").innerHTML = summaryHtml;
+
+  var totalHtml =
+    '<div class="order-total-label">Total Bayar</div>' +
+    '<div class="order-total-price">' + formatPrice(total) + '</div>';
+  document.getElementById("orderTotal").innerHTML = totalHtml;
+
+  document.getElementById("orderOverlay").classList.add("active");
+  document.getElementById("orderModal").classList.add("active");
+}
+
+function closeOrderForm() {
+  document.getElementById("orderOverlay").classList.remove("active");
+  document.getElementById("orderModal").classList.remove("active");
+}
+
+function handleOrder(event) {
+  event.preventDefault();
+  var name = document.getElementById("orderName").value;
+  var phone = document.getElementById("orderPhone").value;
+  var address = document.getElementById("orderAddress").value;
+  var paymentInputs = document.getElementsByName("paymentMethod");
+  var payment = "";
+  for (var i = 0; i < paymentInputs.length; i++) {
+    if (paymentInputs[i].checked) {
+      payment = paymentInputs[i].value;
+      break;
+    }
+  }
+  if (!payment) {
+    alert("Silakan pilih metode pembayaran!");
+    return;
+  }
+
+  var total = 0;
+  var itemCount = 0;
+  for (var i = 0; i < cart.length; i++) {
+    var qty = cart[i].qty || 1;
+    total += cart[i].price * qty;
+    itemCount += qty;
+  }
+
+  var paymentLabels = {
+    bca: "Transfer BCA",
+    bri: "Transfer BRI",
+    mandiri: "Transfer Mandiri",
+    bni: "Transfer BNI",
+    cod: "Cash on Delivery (COD)",
+    qris: "QRIS / E-Wallet"
+  };
+
+  var bankInfo = "";
+  if (payment === "bca") {
+    bankInfo = "<br><b>BCA</b> - 1234567890 a/n Bamsuti";
+  } else if (payment === "bri") {
+    bankInfo = "<br><b>BRI</b> - 9876543210 a/n Bamsuti";
+  } else if (payment === "mandiri") {
+    bankInfo = "<br><b>Mandiri</b> - 555012345678 a/n Bamsuti";
+  } else if (payment === "bni") {
+    bankInfo = "<br><b>BNI</b> - 0981234567 a/n Bamsuti";
+  }
+
+  var successHtml =
+    '<div class="success-icon">&#10004;</div>' +
+    '<div class="success-title">Pesanan Berhasil!</div>' +
+    '<div class="success-subtitle">Terima kasih telah berbelanja di nab.sepatu</div>' +
+    '<div class="success-items"><div class="success-items-title">Item Dipesan</div>';
+  for (var i = 0; i < cart.length; i++) {
+    var item = cart[i];
+    var qty = item.qty || 1;
+    successHtml += '<div class="success-item-row"><span>' + item.name + ' (x' + qty + ')</span><span>' + formatPrice(item.price * qty) + '</span></div>';
+  }
+  successHtml +=
+    '</div>' +
+    '<div class="success-details">' +
+    '<div class="success-detail-row"><span class="success-detail-label">Pemesan</span><span class="success-detail-value">' + name + '</span></div>' +
+    '<div class="success-detail-row"><span class="success-detail-label">Telepon</span><span class="success-detail-value">' + phone + '</span></div>' +
+    '<div class="success-detail-row"><span class="success-detail-label">Alamat</span><span class="success-detail-value">' + address + '</span></div>' +
+    '<div class="success-detail-row"><span class="success-detail-label">Pembayaran</span><span class="success-detail-value">' + paymentLabels[payment] + bankInfo + '</span></div>' +
+    '<div class="success-detail-row"><span class="success-detail-label">Total Item</span><span class="success-detail-value">' + itemCount + ' produk</span></div>' +
+    '<div class="success-detail-row"><span class="success-detail-label">Total Bayar</span><span class="success-detail-value">' + formatPrice(total) + '</span></div>' +
+    '</div>' +
+    '<button class="btn-success-close" onclick="closeSuccess()">Kembali Berbelanja</button>';
+
+  document.getElementById("successBody").innerHTML = successHtml;
+  closeOrderForm();
+  document.getElementById("successOverlay").classList.add("active");
+  document.getElementById("successModal").classList.add("active");
+
   cart = [];
   updateCartCount();
-  closeCart();
+  document.getElementById("orderForm").reset();
+}
+
+function closeSuccess() {
+  document.getElementById("successOverlay").classList.remove("active");
+  document.getElementById("successModal").classList.remove("active");
 }
 
 function handleSearch(query) {
