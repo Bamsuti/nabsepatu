@@ -5,7 +5,8 @@
 **Versi Dokumen:** 2.0  
 **Tanggal:** 15 Juli 2026  
 **Status:** Aktif  
-**Pemilik Produk:** Bamsuti
+**Pemilik Produk:** Bamsuti  
+**Live:** https://nabsepatu-ublo.vercel.app/
 
 ---
 
