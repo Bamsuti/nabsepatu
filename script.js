@@ -1,6 +1,7 @@
 let currentService = "brand";
 let currentSubcategory = null;
 let cart = [];
+let isLoggedIn = false;
 
 function formatPrice(price) {
   return "Rp" + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -179,8 +180,9 @@ function handleLogin(event) {
   var password = document.getElementById("loginPassword").value;
 
   if (email === "admin@nab.sepatu" && password === "admin123") {
+    isLoggedIn = true;
+    updateAuthButton();
     document.getElementById("loginPage").style.display = "none";
-    document.getElementById("app").classList.remove("app-hidden");
     document.getElementById("loginForm").reset();
     return;
   }
@@ -195,8 +197,9 @@ function handleLogin(event) {
   }
 
   if (found) {
+    isLoggedIn = true;
+    updateAuthButton();
     document.getElementById("loginPage").style.display = "none";
-    document.getElementById("app").classList.remove("app-hidden");
     document.getElementById("loginForm").reset();
   } else {
     alert("Email atau kata sandi salah.");
@@ -212,6 +215,10 @@ function closeRegister() {
   document.getElementById("registerOverlay").classList.remove("active");
   document.getElementById("registerModal").classList.remove("active");
   document.getElementById("registerForm").reset();
+}
+
+function closeLogin() {
+  document.getElementById("loginPage").style.display = "none";
 }
 
 function handleRegister(event) {
@@ -239,9 +246,28 @@ function handleLogout() {
   cart = [];
   updateCartCount();
   closeCart();
-  document.getElementById("app").classList.add("app-hidden");
-  document.getElementById("loginPage").style.display = "flex";
-  document.getElementById("loginForm").reset();
+  isLoggedIn = false;
+  updateAuthButton();
+  document.getElementById("loginPage").style.display = "none";
+}
+
+function handleAuthClick() {
+  if (isLoggedIn) {
+    handleLogout();
+  } else {
+    document.getElementById("loginPage").style.display = "flex";
+  }
+}
+
+function updateAuthButton() {
+  var btn = document.getElementById("btnAuth");
+  if (isLoggedIn) {
+    btn.textContent = "Keluar";
+    btn.onclick = handleLogout;
+  } else {
+    btn.textContent = "Masuk";
+    btn.onclick = handleAuthClick;
+  }
 }
 
 function showCart() {
@@ -313,6 +339,11 @@ function closeCart() {
 function checkout() {
   if (cart.length === 0) {
     alert("Keranjang masih kosong!");
+    return;
+  }
+  if (!isLoggedIn) {
+    alert("Silakan masuk terlebih dahulu untuk melakukan pemesanan!");
+    document.getElementById("loginPage").style.display = "flex";
     return;
   }
   closeCart();
