@@ -2,7 +2,7 @@
 
 Website toko sepatu online modern dibangun dengan HTML, CSS, JavaScript vanilla, dan Express.js sebagai backend server.
 
-**Live:** https://nabsepatu.vercel.app  
+**Live:** https://nabsepatu-ublo.vercel.app/  
 **GitHub:** https://github.com/Bamsuti/nabsepatu
 
 ---
