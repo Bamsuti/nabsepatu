@@ -217,10 +217,6 @@ function closeRegister() {
   document.getElementById("registerForm").reset();
 }
 
-function closeLogin() {
-  document.getElementById("loginPage").style.display = "none";
-}
-
 function handleRegister(event) {
   event.preventDefault();
   var name = document.getElementById("regName").value;
@@ -258,10 +254,6 @@ function handleAuthClick() {
   } else {
     document.getElementById("loginPage").style.display = "flex";
   }
-}
-
-function closeLogin() {
-  document.getElementById("loginPage").style.display = "none";
 }
 
 function showCart() {
