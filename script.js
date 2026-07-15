@@ -181,7 +181,7 @@ function handleLogin(event) {
 
   if (email === "admin@nab.sepatu" && password === "admin123") {
     isLoggedIn = true;
-    updateAuthButton();
+    document.getElementById("btnAuth").textContent = "Keluar";
     document.getElementById("loginPage").style.display = "none";
     document.getElementById("loginForm").reset();
     return;
@@ -198,7 +198,7 @@ function handleLogin(event) {
 
   if (found) {
     isLoggedIn = true;
-    updateAuthButton();
+    document.getElementById("btnAuth").textContent = "Keluar";
     document.getElementById("loginPage").style.display = "none";
     document.getElementById("loginForm").reset();
   } else {
@@ -247,8 +247,9 @@ function handleLogout() {
   updateCartCount();
   closeCart();
   isLoggedIn = false;
-  updateAuthButton();
-  document.getElementById("loginPage").style.display = "none";
+  document.getElementById("btnAuth").textContent = "Masuk";
+  document.getElementById("loginPage").style.display = "flex";
+  document.getElementById("loginForm").reset();
 }
 
 function handleAuthClick() {
@@ -259,15 +260,8 @@ function handleAuthClick() {
   }
 }
 
-function updateAuthButton() {
-  var btn = document.getElementById("btnAuth");
-  if (isLoggedIn) {
-    btn.textContent = "Keluar";
-    btn.onclick = handleLogout;
-  } else {
-    btn.textContent = "Masuk";
-    btn.onclick = handleAuthClick;
-  }
+function closeLogin() {
+  document.getElementById("loginPage").style.display = "none";
 }
 
 function showCart() {
