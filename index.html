@@ -22,6 +22,7 @@
         </div>
         <button type="submit" class="btn-login-submit">Masuk</button>
         <p class="login-register-text">Belum punya akun? <a href="#" onclick="showRegister(); return false;">Daftar</a></p>
+        <p class="login-register-text"><a href="#" onclick="closeLogin(); return false;">Kembali ke Beranda</a></p>
       </form>
     </div>
   </div>
@@ -52,7 +53,7 @@
     </div>
   </div>
 
-  <div id="app" class="app-hidden">
+  <div id="app">
     <header class="header">
       <div class="header-inner">
         <div class="logo">
@@ -62,7 +63,7 @@
           <input type="text" id="searchInput" placeholder="Cari sepatu impianmu..." oninput="handleSearch(this.value)">
           <button type="button" onclick="handleSearch(document.getElementById('searchInput').value)">Cari</button>
         </div>
-        <button class="btn-logout" onclick="handleLogout()">Keluar</button>
+        <button class="btn-logout" id="btnAuth" onclick="handleAuthClick()">Masuk</button>
         <div class="cart-icon" onclick="showCart()">
           <span>ðŸ›’</span>
           <span id="cartCount" class="cart-count">0</span>
